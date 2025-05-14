@@ -101,7 +101,7 @@ you can simply run the following script to compute the performance metrics:
 ```bash
 python get_performance.py
 ```
-This script will evaluate the predictions using the following metrics: ROC-AUC, Concordance Index and Kendall’s Tau-b. 
+This script will evaluate the predictions using the following metrics: **ROC-AUC**, **Concordance Index** and **Kendall’s Tau-b**. 
 
  ## 5. Reference
 The paper is available at [arXiv](https://arxiv.org/abs/2411.14515).
