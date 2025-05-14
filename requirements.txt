@@ -1,0 +1,11 @@
+openai==1.13.3
+anthropic==0.21.3
+huggingface_hub==0.23.0
+datasets==2.19.1
+torch==2.3.0
+torchvision==0.18.0
+numpy==1.26.4
+scikit-learn==1.4.2
+scipy==1.13.0
+lifelines==0.27.8
+pandas==2.2.2
