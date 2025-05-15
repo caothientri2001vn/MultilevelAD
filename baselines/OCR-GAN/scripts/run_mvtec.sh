@@ -1,22 +1,20 @@
 #!/usr/bin/env bash
 set -e
-exec > output_32px_2.log 2>&1
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate OCR-GAN
 
-DATASETS=("transistor" "zipper")
-# DATASETS=("bottle")
-
-INPUT_FILE_NAME="test_input_files_32px_2.txt"
-MODEL_DATA_DIR="./data_32px_2"
+DATASETS=("bottle" "carpet" "grid" "leather" "tile" "wood" "cable" "capsule" "hazelnut" "metal_nut" "pill" "screw" "transistor" "zipper")
+INPUT_FILE_NAME="test_input_files_mvtec.txt"
+MODEL_DATA_DIR="./data_mvtec"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
 echo "Training on dataset: $DATASET_NAME"
 
-DATASET_DIR="$(pwd)/../../data/area-based/mvtec_order/$DATASET_NAME"
-OUTPUT_FILE_NAME="csv_rerun/ocr-gan-32px_mvtec_${DATASET_NAME}.csv"
+DATASET_DIR="$(pwd)/../../data/Industry/mvtec/$DATASET_NAME"
+OUTPUT_FILE_NAME="result_csvs/ocr-gan_mvtec_${DATASET_NAME}.csv"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/train/"
@@ -40,18 +38,18 @@ for subdir in "$DATASET_DIR/test"/*; do
   fi
 done
 
-cut -d',' -f1 "$DATASET_DIR/${DATASET_NAME}_template.csv" | tail -n +2 > "$INPUT_FILE_NAME"
+python csv_to_txt.py "$(pwd)/../../data/template/mvtec_${DATASET_NAME}_template.csv" "$INPUT_FILE_NAME"
 
-CUDA_VISIBLE_DEVICES=2 python train_all.py \
+CUDA_VISIBLE_DEVICES=3 python train_all.py \
     --model ocr_gan_aug \
     --dataset $DATASET_NAME \
     --dataroot "$MODEL_DATA_DIR" \
     --isize 32 \
-    --outf "./output_32px" \
+    --outf "./output_mvtec" \
     --niter 50 \
     --testroot "$MODEL_DATA_DIR/real_test" \
     --in_file "$INPUT_FILE_NAME" \
     --out_file "$OUTPUT_FILE_NAME"
 
-python merge_csv.py "$DATASET_DIR/${DATASET_NAME}_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
+python merge_csv.py "$(pwd)/../../data/template/mvtec_${DATASET_NAME}_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
 done
