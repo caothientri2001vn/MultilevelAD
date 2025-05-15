@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -e
-exec > output_infer_covid.log 2>&1
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PNI
 
-# DATASETS=("bichon_frise" "chinese_rural_dog" "golden_retriever" "labrador_retriever" "teddy")
 DATASETS=("covid")
 
 INPUT_FILE_NAME="test_input_files_covid.txt"
@@ -14,9 +13,9 @@ MODEL_OUTPUT_DIR="./result_covid"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
-OUTPUT_FILE_NAME="an_scores_${DATASET_NAME}.csv"
-DATASET_DIR="$(pwd)/../../data/severity-based/covid19"
-TEST_DATASET_DIR="$(pwd)/../../data/severity-based/covid19"
+OUTPUT_FILE_NAME="result_csvs/pni_covid19.csv"
+DATASET_DIR="$(pwd)/../../data/Medical/covid19"
+TEST_DATASET_DIR="$(pwd)/../../data/Medical/covid19"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/original"
@@ -39,7 +38,7 @@ done
 
 ln -sn "$TEST_DATASET_DIR" "$MODEL_DATA_DIR/test"
 
-python csv_to_txt.py "$TEST_DATASET_DIR/covid19_template.csv" "$INPUT_FILE_NAME"
+python csv_to_txt.py "$(pwd)/../../data/template/covid19_template.csv" "$INPUT_FILE_NAME"
 
 echo "Infering on dataset: $DATASET_NAME"
 CUDA_VISIBLE_DEVICES=2 python -u infer.py \
@@ -51,5 +50,5 @@ CUDA_VISIBLE_DEVICES=2 python -u infer.py \
     --out_file "$OUTPUT_FILE_NAME" \
     --test_dir "$MODEL_DATA_DIR/test"
 
-python merge_csv.py "$TEST_DATASET_DIR/covid19_template.csv" "$OUTPUT_FILE_NAME" "merged_pni_${DATASET_NAME}.csv"
+python merge_csv.py "$(pwd)/../../data/template/covid19_template.csv" "$OUTPUT_FILE_NAME" "merged_${OUTPUT_FILE_NAME}"
 done
