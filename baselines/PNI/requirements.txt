@@ -1,0 +1,13 @@
+pytorch-lightning==1.5.9
+pillow==9.0
+faiss-gpu==1.7
+opencv-python;
+scikit-learn==0.24
+scikit-image==0.19
+pymp-pypi==0.5
+numpngw==0.1
+matplotlib==3.7
+timm==0.9
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==1.12.1+cu116
+torchvision==0.13.1+cu116
