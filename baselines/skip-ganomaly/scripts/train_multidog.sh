@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 set -e
-exec > output_multidog.log 2>&1
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate skipganomaly
 
 DATASETS=("bichon_frise" "chinese_rural_dog" "golden_retriever" "labrador_retriever" "teddy")
-# DATASETS=("bichon_frise")
 
 MODEL_DATA_DIR="./data_multidog"
 MODEL_NORMAL_CLASS="0.normal"
@@ -16,31 +15,28 @@ for DATASET_NAME in "${DATASETS[@]}"
 do
 echo "Training on dataset: $DATASET_NAME"
 
-DATASET_DIR="$(pwd)/../../data/class-based/example"
+DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
 
 rm -rf "$MODEL_DATA_DIR"
-mkdir -p "$MODEL_DATA_DIR/train/$MODEL_NORMAL_CLASS"
+mkdir -p "$MODEL_DATA_DIR/train/"
 mkdir -p "$MODEL_DATA_DIR/test/$MODEL_NORMAL_CLASS"
 mkdir -p "$MODEL_DATA_DIR/test/$MODEL_ABNORMAL_CLASS"
 
-# Process each file in the subdirectory
-find "$DATASET_DIR/level_0_train/$DATASET_NAME" -maxdepth 1 -type f | sort | head -n 500 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/train/$MODEL_NORMAL_CLASS/$(basename "$file")"
-done
+ln -sn "$DATASET_DIR/level_0_train/$DATASET_NAME" "$MODEL_DATA_DIR/train/$MODEL_NORMAL_CLASS"
 
 find "$DATASET_DIR/level_0_test/$DATASET_NAME" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/test/$MODEL_NORMAL_CLASS/$(basename "$file")"
+  ln -sn "$file" "$MODEL_DATA_DIR/test/$MODEL_NORMAL_CLASS/$(basename "$file")"
 done
 
 find "$DATASET_DIR/level_1/other_dogs" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/test/$MODEL_ABNORMAL_CLASS/$(basename "$file")"
+  ln -sn "$file" "$MODEL_DATA_DIR/test/$MODEL_ABNORMAL_CLASS/$(basename "$file")"
 done
 
 CUDA_VISIBLE_DEVICES=6 python train.py \
     --model skipganomaly \
     --dataset $DATASET_NAME \
     --dataroot "./data_multidog" \
-    --isize 256 \
+    --isize 32 \
     --niter 50 \
     --outf "./output_multidog/" \
     --manualseed 1

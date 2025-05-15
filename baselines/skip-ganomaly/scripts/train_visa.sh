@@ -1,39 +1,37 @@
 #!/usr/bin/env bash
 set -e
-exec > output_visa.log 2>&1
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate skipganomaly
 
-DATASETS=("candle_not" "capsules" "cashew_not" "chewinggum" "fryum" "macaroni1" "macaroni2" "pcb1" "pcb2" "pcb3" "pcb4" "pipe_fryum")
-# DATASETS=("macaroni1" "macaroni2" "pcb1" "pcb2" "pcb3" "pcb4" "pipe_fryum")
-# DATASETS=("hazelnut")
+DATASETS=("capsules" "chewinggum" "fryum" "macaroni1" "macaroni2" "pcb1" "pcb2" "pcb3" "pipe_fryum")
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
 echo "Training on dataset: $DATASET_NAME"
 
-DATASET_DIR="$(pwd)/../../data/area-based/VisA_reorganized/$DATASET_NAME"
+DATASET_DIR="$(pwd)/../../data/Industry/visa/$DATASET_NAME"
 
-rm -rf './data/'
-mkdir -p "./data/train/"
-mkdir -p "./data/test/"
+rm -rf './data_visa/'
+mkdir -p "./data_visa/train/"
+mkdir -p "./data_visa/test/"
 
-ln -sfn "$DATASET_DIR/train/good" "./data/train/0.normal"
+ln -sn "$DATASET_DIR/train/good" "./data_visa/train/0.normal"
 
 if [ -d "$DATASET_DIR/test/good" ]; then
-  ln -sfn "$DATASET_DIR/test/good" "./data/test/0.normal"
+  ln -sn "$DATASET_DIR/test/good" "./data_visa/test/0.normal"
 else
-  ln -sfn "$DATASET_DIR/test/good_level_0" "./data/test/0.normal"
+  ln -sn "$DATASET_DIR/test/good_level_0" "./data_visa/test/0.normal"
 fi
 
-ln -sfn "$DATASET_DIR/test/bad" "./data/test/1.abnormal"
+ln -sn "$DATASET_DIR/test/bad" "./data_visa/test/1.abnormal"
 
 CUDA_VISIBLE_DEVICES=7 python train.py \
     --model skipganomaly \
     --dataset $DATASET_NAME \
-    --dataroot "./data" \
-    --isize 256 \
+    --dataroot "./data_visa" \
+    --isize 32 \
     --niter 50 \
     --outf "./output_visa/" \
     --manualseed 1

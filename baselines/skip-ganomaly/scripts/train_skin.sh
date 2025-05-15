@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-exec > output_skin.log 2>&1
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate skipganomaly
@@ -15,28 +15,28 @@ for DATASET_NAME in "${DATASETS[@]}"
 do
 echo "Training on dataset: $DATASET_NAME"
 
-DATASET_DIR="$(pwd)/../../data/severity-based/skin-lesion"
+DATASET_DIR="$(pwd)/../../data/Medical/skin-lesion"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/train"
 mkdir -p "$MODEL_DATA_DIR/test/$MODEL_NORMAL_CLASS"
 mkdir -p "$MODEL_DATA_DIR/test/$MODEL_ABNORMAL_CLASS"
 
-ln -sfn "$DATASET_DIR/level_0_train" "$MODEL_DATA_DIR/train/$MODEL_NORMAL_CLASS"
+ln -sn "$DATASET_DIR/level_0_train" "$MODEL_DATA_DIR/train/$MODEL_NORMAL_CLASS"
 
 find "$DATASET_DIR/level_0_test" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/test/$MODEL_NORMAL_CLASS/$(basename "$file")"
+  ln -sn "$file" "$MODEL_DATA_DIR/test/$MODEL_NORMAL_CLASS/$(basename "$file")"
 done
 
 find "$DATASET_DIR/NV_level_1" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/test/$MODEL_ABNORMAL_CLASS/$(basename "$file")"
+  ln -sn "$file" "$MODEL_DATA_DIR/test/$MODEL_ABNORMAL_CLASS/$(basename "$file")"
 done
 
 CUDA_VISIBLE_DEVICES=2 python train.py \
     --model skipganomaly \
     --dataset $DATASET_NAME \
-    --dataroot "./data_skin" \
-    --isize 256 \
+    --dataroot "$MODEL_DATA_DIR" \
+    --isize 32 \
     --niter 50 \
     --outf "./output_skin/" \
     --manualseed 1
