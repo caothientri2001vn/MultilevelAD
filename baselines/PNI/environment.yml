@@ -102,4 +102,3 @@ dependencies:
       - werkzeug==3.0.4
       - yarl==1.15.2
       - zipp==3.20.2
-prefix: /home/tri/miniconda3/envs/PNI

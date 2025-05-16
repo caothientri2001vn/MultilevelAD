@@ -135,4 +135,3 @@ dependencies:
       - threadpoolctl==3.5.0
       - tqdm==4.67.1
       - tzdata==2025.1
-prefix: /home/tri/miniconda3/envs/PANDA
