@@ -3,6 +3,7 @@
 - CUDA   : 11.3
 ## Packages
 ```bash
+cd Score-based
 pip install -r requirements.txt
 ```
 ## Pretrained weights
@@ -14,35 +15,35 @@ python checkpoints_download.py
 ### Covid19
 ```bash
 python train_severity.py \
-    --dataset_path /home/tri/multi-level-anomaly/data/severity-based/covid19 \
+    --dataset_path ../data/severity-based/covid19 \
     --save_path ./save/ \
     --class_name all
 ```
 ### Diabetic Retinopathy 
 ``` bash
 python train_dia.py \
-    --dataset_path /home/tri/multi-level-anomaly/data/severity-based/diabetic-retinopathy \
+    --dataset_path ../data/severity-based/diabetic-retinopathy \
     --save_path ./save/ \
     --class_name all
 ```
 ### Skin Lesion
 ``` bash
 python train_skin.py \
-    --dataset_path /home/tri/multi-level-anomaly/data/severity-based/skin-lesion \
+    --dataset_path ../data/severity-based/skin-lesion \
     --save_path ./save/ \
     --class_name all
 ```
 ### VisA (Area-based)
 ``` bash
 python train_visa.py \
-    --dataset_path /home/tri/multi-level-anomaly/data/area-based/VisA_reorganized \
+    --dataset_path ../data/area-based/VisA_reorganized \
     --save_path ./save/ \
     --class_name all
 ```
 ### Class-based Example (Level 0)
 ``` bash
 python train.py \
-    --dataset_path /home/tri/multi-level-anomaly/data/class-based/example/level_0_train \
+    --dataset_path ../data/class-based/example/level_0_train \
     --save_path ./save/ \
     --class_name all
 ```
@@ -65,7 +66,7 @@ python inference_example.py
 ```
 After running evalution, the results will be stored in `../results/`
 ## Acknowledgement
-This implementation is adapted and modified based on the original Anomaly Detection using Score-based Perturbation Resilience code. We are thankful to their brilliant works!
+This implementation is adapted and modified based on the original [Anomaly Detection using Score-based Perturbation Resilience](https://github.com/Lee-JongHyeon/Anomaly-Detection-using-Score-based-Perturbation-Resilience) code. We are thankful to their brilliant works!
 
 
 
