@@ -1,0 +1,4 @@
+scikit-learn
+faiss-gpu
+numpy==1.*
+tqdm
