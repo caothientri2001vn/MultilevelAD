@@ -1,45 +1,17 @@
-# IGD
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/unsupervised-anomaly-detection-and/anomaly-detection-on-mnist)](https://paperswithcode.com/sota/anomaly-detection-on-mnist?p=unsupervised-anomaly-detection-and)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/unsupervised-anomaly-detection-and/anomaly-detection-on-fashion-mnist)](https://paperswithcode.com/sota/anomaly-detection-on-fashion-mnist?p=unsupervised-anomaly-detection-and)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/unsupervised-anomaly-detection-and/anomaly-detection-on-one-class-cifar-10)](https://paperswithcode.com/sota/anomaly-detection-on-one-class-cifar-10?p=unsupervised-anomaly-detection-and)
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/unsupervised-anomaly-detection-and/anomaly-detection-on-mvtec-ad)](https://paperswithcode.com/sota/anomaly-detection-on-mvtec-ad?p=unsupervised-anomaly-detection-and)
+## Train and Evaluate
+We provided shell scripts to train and evaluate the models on our dataset. To train and evaluate with our default settings, run the corresponding shell script in the `scripts/` directory. For example, to train and evaluate IGD on the VisA dataset, run:
 
-This repo contains the Pytorch implementation of our paper:
-> [**Deep One-Class Classification via Interpolated Gaussian Descriptor**](https://arxiv.org/pdf/2101.10043.pdf)
->
-> Yuanhong Chen*, [Yu Tian*](https://yutianyt.com/), [Guansong Pang](https://sites.google.com/site/gspangsite/home?authuser=0), [Gustavo Carneiro](https://cs.adelaide.edu.au/~carneiro/).
-
-- **Accepted at AAAI 2022 (Oral).**  
-
-## Dataset
-
-[**Please download the MVTec AD dataset**](https://www.mvtec.com/company/research/datasets/mvtec-ad)
-
-
-Please download the Hyper-Kvasir Anomaly Detection Dataset from this [**link**](https://drive.google.com/file/d/1-D4noq1V115JXL_uxz-h-P7PNZEP4j1y/view?usp=sharing). 
-
-
-
-## Train and Test IGD 
-After the setup, simply run the following command to train/test the global/local model: 
-```shell
-./job.sh
+```bash
+mkdir result_csvs
+./scripts/run_visa.sh
 ```
 
+The scripts are:
 
-## Citation
+- `run_visa.sh`: Train and evaluate IGD on the VisA dataset.
+- `run_mvtec.sh`: Train and evaluate IGD on the MVTec dataset.
+- `run_multidog.sh`: Train and evaluate IGD on the MultiDog dataset.
+- `run_medical.sh`: Train and evaluate IGD on the covid19, diabetic-retinopathy and skin-lesion datasets.
 
-If you find this repo useful for your research, please consider citing our paper:
-
-```bibtex
-@inproceedings{chen2022deep,
-  title={Deep one-class classification via interpolated gaussian descriptor},
-  author={Chen, Yuanhong and Tian, Yu and Pang, Guansong and Carneiro, Gustavo},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-  volume={36},
-  number={1},
-  pages={383--392},
-  year={2022}
-}
-```
----
+## Acknowledgement
+This implementation is adapted and modified based on the original [IGD](https://github.com/tianyu0207/IGD) code. We are thankful to their brilliant works!
