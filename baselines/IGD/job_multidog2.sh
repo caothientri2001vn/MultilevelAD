@@ -1,0 +1,1 @@
+python -m p256.ssim_main_multidog --num 1 2 3 4 5 --sample_rate 1.0
