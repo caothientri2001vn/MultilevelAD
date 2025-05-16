@@ -27,6 +27,7 @@ print(">> Device Info: {} is in use".format(device))
 parser = argparse.ArgumentParser(description='CIFAR10 Training')
 parser.add_argument('-n', '--num', nargs='+', type=int, help='<Required> Set flag', required=True)
 parser.add_argument('-sr', '--sample_rate', default=1, type=float)
+parser.add_argument('--work_dir', type=str, required=True)
 
 DIM = 32  # Model dimensionality
 CRITIC_ITERS = 5  # How many iterations to train the critic for
@@ -244,7 +245,7 @@ def train(args, NORMAL_NUM,
     generator.c = None
     generator.sigma = None
 
-    train_path = '/home/tri/multi-level-anomaly/data/severity-based/{}/level_0_train'.format(NORMAL_NUM)
+    train_path = '{}/../../data/Medical/{}/level_0_train'.format(args.work_dir, NORMAL_NUM)
     START_ITER = 0
     # train_size = len(os.listdir(train_path))
 
@@ -341,7 +342,7 @@ def train(args, NORMAL_NUM,
         if iteration == END_ITER - 1:
             
             is_end = True if iteration == END_ITER - 1 else False
-            test_auc, AUC_LIST, image_paths, severities, score = validation(NORMAL_NUM, iteration, generator, discriminator, real_data, fake_data, is_end, AUC_LIST, END_ITER)
+            test_auc, AUC_LIST, image_paths, severities, score = validation(NORMAL_NUM, iteration, generator, discriminator, real_data, fake_data, is_end, AUC_LIST, END_ITER, args)
             # print("image_paths", len(image_paths))
             # print("severities", len(severities))
             # print("score", len(score))
@@ -354,7 +355,7 @@ def train(args, NORMAL_NUM,
 
 
                 # Lưu DataFrame vào file CSV
-            df.to_csv('/home/tri/multi-level-anomaly/results_noise/IGD/IGD_{}.csv'.format(NORMAL_NUM), index=False)
+            df.to_csv('{}/result_csvs/IGD_{}.csv'.format(args.work_dir, NORMAL_NUM), index=False)
             process.set_description("{AUC: %.5f}" % test_auc)
             opt_path = ckpt_path + '/optimizer'
             if not os.path.exists(opt_path):
@@ -365,7 +366,7 @@ def train(args, NORMAL_NUM,
 
 import csv
 import pandas as pd
-def validation(NORMAL_NUM, iteration, generator, discriminator, real_data, fake_data, is_end, AUC_LIST, END_ITER):
+def validation(NORMAL_NUM, iteration, generator, discriminator, real_data, fake_data, is_end, AUC_LIST, END_ITER, args=None):
     discriminator.eval()
     generator.eval()
     # resnet.eval()
@@ -377,11 +378,12 @@ def validation(NORMAL_NUM, iteration, generator, discriminator, real_data, fake_
     normal_recon = []
     abnormal_recon = []
     image_paths = []
-    # test_root = '/home/tri/multi-level-anomaly/data/severity-based/{}/'.format(NORMAL_NUM)
-    # test_root = '/home/tri/multi-level-anomaly/data/corrupted/brightness/{}/'.format(NORMAL_NUM)
-    test_root = '/home/tri/multi-level-anomaly/data/corrupted/gaussian_noise/{}/'.format(NORMAL_NUM)
-    
-    path_template = '/home/tri/multi-level-anomaly/data/template/{}_template.csv'.format(NORMAL_NUM)
+    if args is not None:
+        test_root = '{}/../../data/Medical/{}/'.format(args.work_dir, NORMAL_NUM)
+        path_template = '{}/../../data/template/{}_template.csv'.format(args.work_dir, NORMAL_NUM)
+    else:
+        test_root = '/home/tri/multi-level-anomaly/data/corrupted/gaussian_noise/{}/'.format(NORMAL_NUM)
+        path_template = '/home/tri/multi-level-anomaly/data/template/{}_template.csv'.format(NORMAL_NUM)
     # list_test = os.listdir(test_root)
 
     df = pd.read_csv(path_template)

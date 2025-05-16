@@ -1,1 +1,0 @@
-python -m p256.ssim_main_medical --num 3 --sample_rate 1.0
