@@ -1,5 +1,7 @@
 # Are Anomaly Scores Telling the Whole Story? A Benchmark for Multilevel Anomaly Detection
 
+![alt text](FigMMAD.jpg)
+
 ## 0. ⚙️Environment
 ### 🔧 Step 1: Create a new environment
 ```bash
