@@ -14,8 +14,8 @@ MODEL_OUTPUT_DIR="./result_multidog"
 for DATASET_NAME in "${DATASETS[@]}"
 do
 OUTPUT_FILE_NAME="an_scores_${DATASET_NAME}.csv"
-DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
-TEST_DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
+DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
+TEST_DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/original"

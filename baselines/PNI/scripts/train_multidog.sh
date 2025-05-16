@@ -12,7 +12,7 @@ MODEL_OUTPUT_DIR="./result_multidog"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
-DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
+DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/test/good"

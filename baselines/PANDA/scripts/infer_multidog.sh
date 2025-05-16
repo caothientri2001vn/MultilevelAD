@@ -14,8 +14,8 @@ for DATASET_NAME in "${DATASETS[@]}"
 do
 INPUT_FILE_NAME="inputs/visa_$DATASET_NAME.txt"
 OUTPUT_FILE_NAME="result_csvs/panda_example_${DATASET_NAME}.csv"
-DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
-TEST_DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
+DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
+TEST_DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
 
 if [ -d "$MODEL_DATA_DIR" ]; then
     rm -r "$MODEL_DATA_DIR"

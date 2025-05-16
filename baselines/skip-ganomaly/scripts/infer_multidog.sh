@@ -15,7 +15,7 @@ do
 echo "Infering on dataset: $DATASET_NAME"
 
 OUTPUT_FILE_NAME="result_csvs/skip-gan_multidog_${DATASET_NAME}.csv"
-DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
+DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
 
 rm -rf "$MODEL_DATA_DIR"
 ln -sn "$DATASET_DIR" "$MODEL_DATA_DIR"

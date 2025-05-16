@@ -14,7 +14,7 @@ for DATASET_NAME in "${DATASETS[@]}"
 do
 echo "Training on dataset: $DATASET_NAME"
 
-DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
+DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
 OUTPUT_FILE_NAME="result_csvs/ocr-gan_multidog_${DATASET_NAME}.csv"
 
 rm -rf "$MODEL_DATA_DIR"

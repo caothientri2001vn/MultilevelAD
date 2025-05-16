@@ -15,7 +15,7 @@ for DATASET_NAME in "${DATASETS[@]}"
 do
 echo "Training on dataset: $DATASET_NAME"
 
-DATASET_DIR="$(pwd)/../../data/NoveltyClass/multidog"
+DATASET_DIR="$(pwd)/../../data/OneClassNovelty/multidog"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/train/"

@@ -247,7 +247,7 @@ def train(args, NORMAL_NUM,
     generator.c = None
     generator.sigma = None
 
-    train_path = '{}/../../data/NoveltyClass/multidog/level_0_train/{}'.format(args.work_dir, NORMAL_NUM)
+    train_path = '{}/../../data/OneClassNovelty/multidog/level_0_train/{}'.format(args.work_dir, NORMAL_NUM)
     START_ITER = 0
     # train_size = len(os.listdir(train_path))
 
@@ -382,7 +382,7 @@ def validation(NORMAL_NUM, iteration, generator, discriminator, real_data, fake_
     image_paths = []
 
     if args is not None:
-        test_root = '{}/../../data/NoveltyClass/multidog/'.format(args.work_dir)
+        test_root = '{}/../../data/OneClassNovelty/multidog/'.format(args.work_dir)
         path_template = '{}/../../data/template/multidog_{}_template.csv'.format(args.work_dir, NORMAL_NUM)
     else:
         test_root = '/home/tri/multi-level-anomaly/data/corrupted/gaussian_noise/example/'
