@@ -2,8 +2,6 @@
 set -e
 cd "$(dirname "$0")"/..
 
-# exec > logs/output_infer_visa.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
@@ -15,9 +13,9 @@ MODEL_OUTPUT_DIR="./results/result_visa"
 for DATASET_NAME in "${DATASETS[@]}"
 do
 INPUT_FILE_NAME="inputs/visa_$DATASET_NAME.txt"
-OUTPUT_FILE_NAME="csvs/panda_visa_${DATASET_NAME}.csv"
-DATASET_DIR="$(pwd)/../../data/area-based/VisA_reorganized/$DATASET_NAME"
-TEST_DATASET_DIR="$(pwd)/../../data/area-based/VisA_reorganized/$DATASET_NAME"
+OUTPUT_FILE_NAME="result_csvs/panda_visa_${DATASET_NAME}.csv"
+DATASET_DIR="$(pwd)/../../data/Industry/visa/$DATASET_NAME"
+TEST_DATASET_DIR="$(pwd)/../../data/Industry/visa/$DATASET_NAME"
 
 if [ -d "$MODEL_DATA_DIR" ]; then
     rm -r "$MODEL_DATA_DIR"
@@ -34,7 +32,7 @@ ln -sn "$DATASET_DIR/train/good" "$MODEL_DATA_DIR/original/$DATASET_NAME/train/g
 
 ln -sn "$TEST_DATASET_DIR/test/" "$MODEL_DATA_DIR/test"
 
-python csv_to_txt.py "$TEST_DATASET_DIR/${DATASET_NAME}_template.csv" "$INPUT_FILE_NAME"
+python csv_to_txt.py "$(pwd)/../../data/template/visa_${DATASET_NAME}_template.csv" "$INPUT_FILE_NAME"
 
 echo "Infering on dataset: $DATASET_NAME"
 CUDA_VISIBLE_DEVICES=7 python -u infer.py \
@@ -45,5 +43,5 @@ CUDA_VISIBLE_DEVICES=7 python -u infer.py \
     --batch_size 32 \
     --output_dir "$MODEL_OUTPUT_DIR"
 
-python merge_csv.py "$TEST_DATASET_DIR/${DATASET_NAME}_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
+python merge_csv.py "$(pwd)/../../data/template/visa_${DATASET_NAME}_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
 done

@@ -2,8 +2,6 @@
 set -e
 cd "$(dirname "$0")"/..
 
-exec > logs/output_skin.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
@@ -14,7 +12,7 @@ MODEL_OUTPUT_DIR="./results/result_skin"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
-DATASET_DIR="$(pwd)/../../data/severity-based/skin-lesion"
+DATASET_DIR="$(pwd)/../../data/Medical/skin-lesion"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/test/good"

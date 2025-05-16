@@ -2,20 +2,17 @@
 set -e
 cd "$(dirname "$0")"/..
 
-exec > logs/output_mvtec.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
 DATASETS=("bottle" "carpet" "grid" "leather" "tile" "wood" "cable" "capsule" "hazelnut" "metal_nut" "pill" "screw" "transistor" "zipper")
-# DATASETS=("bottle")
 
 MODEL_DATA_DIR="./datasets/dataset_mvtec"
 MODEL_OUTPUT_DIR="./results/result_mvtec"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
-DATASET_DIR="$(pwd)/../../data/area-based/mvtec_order/$DATASET_NAME"
+DATASET_DIR="$(pwd)/../../data/Industry/mvtec/$DATASET_NAME"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR"

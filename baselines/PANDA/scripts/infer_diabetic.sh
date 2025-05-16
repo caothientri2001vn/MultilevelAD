@@ -2,8 +2,6 @@
 set -e
 cd "$(dirname "$0")"/..
 
-# exec > logs/output_infer_diabetic.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
@@ -15,9 +13,9 @@ MODEL_OUTPUT_DIR="./results/result_diabetic"
 for DATASET_NAME in "${DATASETS[@]}"
 do
 INPUT_FILE_NAME="inputs/diabetic.txt"
-OUTPUT_FILE_NAME="csvs/panda_diabetic.csv"
-DATASET_DIR="$(pwd)/../../data/severity-based/diabetic-retinopathy"
-TEST_DATASET_DIR="$(pwd)/../../data/severity-based/diabetic-retinopathy"
+OUTPUT_FILE_NAME="result_csvs/panda_diabetic.csv"
+DATASET_DIR="$(pwd)/../../data/Medical/diabetic-retinopathy"
+TEST_DATASET_DIR="$(pwd)/../../data/Medical/diabetic-retinopathy"
 
 if [ -d "$MODEL_DATA_DIR" ]; then
     rm -r "$MODEL_DATA_DIR"
@@ -27,25 +25,22 @@ mkdir -p "$MODEL_DATA_DIR/original"
 
 mkdir -p "$MODEL_DATA_DIR/original/$DATASET_NAME/test/good"
 mkdir -p "$MODEL_DATA_DIR/original/$DATASET_NAME/test/bad"
-mkdir -p "$MODEL_DATA_DIR/original/$DATASET_NAME/train/good"
+mkdir -p "$MODEL_DATA_DIR/original/$DATASET_NAME/train/"
 
-# Process each file in the subdirectory
-find "$DATASET_DIR/level_0_train" -maxdepth 1 -type f | sort | head -n 1000 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/original/$DATASET_NAME/train/good/$(basename "$file")"
-done
+ln -sn "$DATASET_DIR/level_0_train" "$MODEL_DATA_DIR/original/$DATASET_NAME/train/good"
 
 find "$DATASET_DIR/level_0_test" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/original/$DATASET_NAME/test/good/$(basename "$file")"
+  ln -sn "$file" "$MODEL_DATA_DIR/original/$DATASET_NAME/test/good/$(basename "$file")"
 done
 
 find "$DATASET_DIR/level_1" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
-  ln -sfn "$file" "$MODEL_DATA_DIR/original/$DATASET_NAME/test/bad/$(basename "$file")"
+  ln -sn "$file" "$MODEL_DATA_DIR/original/$DATASET_NAME/test/bad/$(basename "$file")"
 done
 
 
 ln -sn "$TEST_DATASET_DIR" "$MODEL_DATA_DIR/test"
 
-python csv_to_txt.py "$TEST_DATASET_DIR/${DATASET_NAME}_template.csv" "$INPUT_FILE_NAME"
+python csv_to_txt.py "$(pwd)/../../data/template/diabetic-retinopathy_template.csv" "$INPUT_FILE_NAME"
 
 echo "Infering on dataset: $DATASET_NAME"
 CUDA_VISIBLE_DEVICES=7 python -u infer.py \
@@ -56,5 +51,5 @@ CUDA_VISIBLE_DEVICES=7 python -u infer.py \
     --batch_size 32 \
     --output_dir "$MODEL_OUTPUT_DIR"
 
-python merge_csv.py "$TEST_DATASET_DIR/${DATASET_NAME}_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
+python merge_csv.py "$(pwd)/../../data/template/diabetic-retinopathy_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
 done

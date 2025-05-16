@@ -2,8 +2,6 @@
 set -e
 cd "$(dirname "$0")"/..
 
-# exec > logs/output_infer_covid.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
@@ -15,9 +13,9 @@ MODEL_OUTPUT_DIR="./results/result_covid"
 for DATASET_NAME in "${DATASETS[@]}"
 do
 INPUT_FILE_NAME="inputs/covid.txt"
-OUTPUT_FILE_NAME="csvs/panda_covid.csv"
-DATASET_DIR="$(pwd)/../../data/severity-based/covid19"
-TEST_DATASET_DIR="$(pwd)/../../data/severity-based/covid19"
+OUTPUT_FILE_NAME="result_csvs/panda_covid.csv"
+DATASET_DIR="$(pwd)/../../data/Medical/covid19"
+TEST_DATASET_DIR="$(pwd)/../../data/Medical/covid19"
 
 if [ -d "$MODEL_DATA_DIR" ]; then
     rm -r "$MODEL_DATA_DIR"
@@ -42,7 +40,7 @@ done
 
 ln -sn "$TEST_DATASET_DIR" "$MODEL_DATA_DIR/test"
 
-python csv_to_txt.py "$TEST_DATASET_DIR/covid19_template.csv" "$INPUT_FILE_NAME"
+python csv_to_txt.py "$(pwd)/../../data/template/covid19_template.csv" "$INPUT_FILE_NAME"
 
 echo "Infering on dataset: $DATASET_NAME"
 CUDA_VISIBLE_DEVICES=7 python -u infer.py \
@@ -53,5 +51,5 @@ CUDA_VISIBLE_DEVICES=7 python -u infer.py \
     --batch_size 32 \
     --output_dir "$MODEL_OUTPUT_DIR"
 
-python merge_csv.py "$TEST_DATASET_DIR/covid19_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
+python merge_csv.py "$(pwd)/../../data/template/covid19_template.csv" "$OUTPUT_FILE_NAME" "merged_$OUTPUT_FILE_NAME"
 done

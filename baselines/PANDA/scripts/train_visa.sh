@@ -2,8 +2,6 @@
 set -e
 cd "$(dirname "$0")"/..
 
-exec > logs/output_visa.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
@@ -14,7 +12,7 @@ MODEL_OUTPUT_DIR="./results/result_visa"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
-DATASET_DIR="$(pwd)/../../data/area-based/VisA_reorganized/$DATASET_NAME"
+DATASET_DIR="$(pwd)/../../data/Industry/visa/$DATASET_NAME"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/ground_truth"

@@ -2,8 +2,6 @@
 set -e
 cd "$(dirname "$0")"/..
 
-exec > logs/output_diabetic.log 2>&1
-
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate PANDA
 
@@ -14,17 +12,14 @@ MODEL_OUTPUT_DIR="./results/result_diabetic"
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
-DATASET_DIR="$(pwd)/../../data/severity-based/diabetic-retinopathy"
+DATASET_DIR="$(pwd)/../../data/Medical/diabetic-retinopathy"
 
 rm -rf "$MODEL_DATA_DIR"
 mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/test/good"
 mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/test/bad"
-mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/train/good"
+mkdir -p "$MODEL_DATA_DIR/$DATASET_NAME/train"
 
-# Process each file in the subdirectory
-find "$DATASET_DIR/level_0_train" -maxdepth 1 -type f | sort | head -n 1000 | while IFS= read -r file; do
-  ln -sn "$file" "$MODEL_DATA_DIR/$DATASET_NAME/train/good/$(basename "$file")"
-done
+ln -sn "$DATASET_DIR/level_0_train" "$MODEL_DATA_DIR/$DATASET_NAME/train/good"
 
 find "$DATASET_DIR/level_0_test" -maxdepth 1 -type f | sort | head -n 50 | while IFS= read -r file; do
   ln -sn "$file" "$MODEL_DATA_DIR/$DATASET_NAME/test/good/$(basename "$file")"
