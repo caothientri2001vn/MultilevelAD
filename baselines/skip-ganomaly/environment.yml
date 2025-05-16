@@ -113,4 +113,3 @@ dependencies:
       - wcwidth==0.2.13
       - websocket-client==1.8.0
       - zipp==3.20.2
-prefix: /home/tri/miniconda3/envs/skipganomaly
