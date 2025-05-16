@@ -105,16 +105,3 @@ python get_performance.py
 ```
 This script will evaluate the predictions using the following metrics: **ROC-AUC**, **Concordance Index** and **Kendall’s Tau-b**. 
 
- ## 5. Reference
-The paper is available at [arXiv](https://arxiv.org/abs/2411.14515).
-
-Please cite this paper if it helps your research:
-```bibtex
-@article{cao2024anomaly,
-  title={Are Anomaly Scores Telling the Whole Story? A Benchmark for Multilevel Anomaly Detection},
-  author={Cao, Tri and Trinh, Minh-Huy and Deng, Ailin and Nguyen, Quoc-Nam and Duong, Khoa and Cheung, Ngai-Man and Hooi, Bryan},
-  journal={arXiv preprint arXiv:2411.14515},
-  year={2024}
-}
-```
-
