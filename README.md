@@ -37,7 +37,7 @@ for sample in ds:
 ### Data structure:
 After download, the dataset will be stored in the following structure:
 ```
-MAD-Bench/
+data/
 ├── Medical/
 │   ├── covid19/
 │   ├── diabetic-retinopathy/
@@ -47,7 +47,7 @@ MAD-Bench/
 │   ├── mvtec/
 │   └── visa/
 │
-├── NoveltyClass/
+├── OneClassNovelty/
 │   └── multidog/
 │ 
 └── template/
